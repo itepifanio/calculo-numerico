@@ -9,7 +9,7 @@ even = lambda k,x: (-1)**(k/2)*k*sin(x) + (-1)*(k/2) * x * cos(x)
 
 def f(x):
     result_global = 0
-    for i in range(0, 13):
+    for i in range(0, 18):
         if i%2 == 0:
             r = (even(i, a)/factorial(i))*((x - a)**i)
         else:
@@ -18,7 +18,7 @@ def f(x):
     
     return result_global
 
-rng = np.linspace(-10, 10, 1000)
+rng = np.linspace(-10, 10, 100)
 fx = [f(i) for i in rng]
 
 gp.s([rng, fx], filename='teste.out')
