@@ -18,5 +18,8 @@ def f(x):
     
     return result_global
 
-# func_direct = gp.PyFunction(f)
-# gp.s(np.(f), filename='teste.out')
+rng = np.linspace(-10, 10, 1000)
+fx = [f(i) for i in rng]
+
+gp.s([rng, fx], filename='teste.out')
+gp.c('plot "teste.out"')
