@@ -1,5 +1,3 @@
-import numpy as np
-
 f = lambda x: x**3 - 1.7*(x**2) - 12.78*x - 10.08
 df = lambda x: 3*x**2 - 3.4*x - 12.78
 
