@@ -8,10 +8,9 @@ max_iteracoes = 100 # evita loops infinitos
 a = -5
 b = 5
 c = (a + b)/2 # ponto médio
-erro = 1
 
 i = 0
-while erro > 0.0001 and max_iteracoes > i:
+while max_iteracoes > i:
     if(f(b) - f(a)) == 0:
         break
 
