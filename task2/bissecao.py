@@ -1,10 +1,10 @@
 f = lambda x: x**3 - 1.7*(x**2) - 12.78*x - 10.08
-intervalo = {'a': -5, 'b': 5}
+intervalo = {'a': -2, 'b': -0}
 
 def ponto_medio(x, y):
     return (x + y)/2
 
-max_interacoes = 100 # evita loops infinitos
+max_iteracoes = 100 # evita loops infinitos
 n = 0
 result = -1
 erro = 0.0001
@@ -14,12 +14,12 @@ print(f'   I | Intervalo a | Intervalo b | Valor médio c |     f(c)   |')
 
 # teorema de bolzano
 if f(a)*f(b) < 0:
-    while n < max_interacoes and abs((a - b)/2) > erro:
+    while n < max_iteracoes and abs((a - b)/2) > erro:
         c = ponto_medio(a, b)
         fc = f(c)
         # encontrado a raiz
         if fc == 0:
-            print(f' {n} | {a} | {b} | {c} | {f(c)} |')
+            print(f' {n:3d} | {a:11f} | {b:11f} | {c:13f} | {fc:10f} |')
             result = c
             break
         n += 1
