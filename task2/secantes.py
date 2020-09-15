@@ -5,8 +5,8 @@ f = lambda x: x**3 - 1.7*(x**2) - 12.78*x - 10.08
 max_iteracoes = 100 # evita loops infinitos
 
 # valores que delimitam a raíz
-a = -5
-b = 5
+a = -3
+b = 0
 c = (a + b)/2 # ponto médio
 
 i = 0

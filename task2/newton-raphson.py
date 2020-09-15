@@ -2,7 +2,7 @@ f = lambda x: x**3 - 1.7*(x**2) - 12.78*x - 10.08
 df = lambda x: 3*x**2 - 3.4*x - 12.78
 
 max_iteracoes = 100 # evita loops infinitos
-x0 = 3 #chute inicial
+x0 = 5 #chute inicial
 erro = 1
 
 i = 0
