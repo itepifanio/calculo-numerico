@@ -1,25 +1,28 @@
-import numpy as np
+import math
 g = 32.17
 s0 = 300
 m = 0.25
 k = 0.1
-error = 0.00001
+erro = 0.0000000000000000000001
 
-s = lambda t : s0 - t*((m*g)/k) + ((m**2)*g)/(k**2)*(1- np.exp((-k*t)/m))
+f = lambda t : s0 - t*((m*g)/k) + (((m**2)*g)/(k**2))*(1 - math.exp((-k*t)/m))
 
-# isolando s = 0
+max_iteracoes = 10000 # evita loops infinitos
 
-t = lambda t: s0/(m*g/k) + ((m**2)*g)/(k**2)*(1- np.exp((-k*t)/m))/(m*g/k)
-
-#300/(0.25*32.17/0.1) + ((0.25**2)*32.17)/((0.1)**2)*((1 - e**(-0.1*t)/0.25)/(0.25*32.17)/0.1)
+# utilizando o método da secante
+a = 0
+b = 99
+c = (a + b)/2 # ponto médio
 
 i = 0
-x0 = 0
-x1 = 0
-while i < 100:
-    x1 = t(x0)
-    x0 = x1
-    i += 1
+while max_iteracoes > i:
+    if abs(b - a) < erro:
+        break
 
-print(x1)
+    c = b - ((b - a)/ (f(b) - f(a)))*f(b)
+    a = b
+    b = c
+
+    print(f'|{i:2d} | {c:.10f} |')
+    i += 1
 

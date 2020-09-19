@@ -12,7 +12,7 @@ erro = 0.0001
 a = intervalo['a']; b = intervalo['b'] # variaveis para o intervalo
 print(f'   I | Intervalo a | Intervalo b | Valor médio c |     f(c)   |')
 
-while n < max_iteracoes and abs((a - b)/2) > erro:
+while n < max_iteracoes and abs(a - b) > erro:
     c = ponto_medio(a, b)
     fc = f(c)
     # encontrado a raiz

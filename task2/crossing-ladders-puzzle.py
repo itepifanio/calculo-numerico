@@ -1,11 +1,14 @@
-f = lambda x: x**3 - 1.7*(x**2) - 12.78*x - 10.08
+x1 = 20
+x2 = 30
+A = 8
 
-max_iteracoes = 100 # evita loops infinitos
+def f(x):
+    return x**4 - 2*A*x**3 - (x2**2 - x1**2)*x**2 + 2*A*(x2**2 - x1**2)*x - A**2*(x2**2 - x1**2)
 
-# valores que delimitam a raíz
-a = -3
-b = 0
-c = (a + b)/2 # ponto médio
+max_iteracoes = 1000
+
+a = -50
+b = 50
 
 i = 0
 while max_iteracoes > i:
