@@ -6,7 +6,7 @@ def multiplicaLinha(linha, i):
 def subtraiLinha(linhaA, linhaB):
   return [a - b for (a, b) in zip(linhaA, linhaB)]
 
-def escalonar(matriz):
+def obterMatrizTriangular(matriz):
     temp = list(matriz)
     for i in range(len(matriz)):
         linhaAtiva = temp[i]
@@ -14,9 +14,26 @@ def escalonar(matriz):
             j += 1
             if linhaAtiva[i] == 0: continue
             temp[j+i] = subtraiLinha(col, multiplicaLinha(linhaAtiva, col[i]//linhaAtiva[i]))
-    print(temp)
+    return temp
 
+def obterVetorSolucao(matrizTriangular):
+    m = len(matrizTriangular)
+    result = []
+    for i in range(m - 1, -1, -1): # itera pelo fim 3, 2, 1, 0...
+        result.insert(0, matrizTriangular[i][m] / matrizTriangular[i][i])
+        for k in range(i - 1, -1, -1):
+            matrizTriangular[k][m] -= matrizTriangular[k][i] * result[0]
+    return result
 
-matriz = [[1,2,3], [4,5,6], [7,8,9]]
+matriz = [
+    [3,1,2,1,15],
+    [6,5,9,1,45],
+    [9,-3,-2,6,25],
+    [-6,10,18,1,52]
+]
 
-escalonar(matriz)
+print(
+    obterVetorSolucao(
+        obterMatrizTriangular(matriz)
+    )
+)
