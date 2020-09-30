@@ -13,7 +13,7 @@ def obterMatrizTriangular(matriz):
         for j, col in enumerate(temp[(i+1):]):
             j += 1
             if linhaAtiva[i] == 0: continue
-            temp[j+i] = subtraiLinha(col, multiplicaLinha(linhaAtiva, col[i]//linhaAtiva[i]))
+            temp[j+i] = subtraiLinha(col, multiplicaLinha(linhaAtiva, col[i]/linhaAtiva[i]))
     return temp
 
 def obterVetorSolucao(matrizTriangular):
