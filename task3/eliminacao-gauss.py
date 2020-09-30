@@ -25,15 +25,15 @@ def obterVetorSolucao(matrizTriangular):
             matrizTriangular[k][m] -= matrizTriangular[k][i] * result[0]
     return result
 
-matriz = [
-    [3,1,2,1,15],
-    [6,5,9,1,45],
-    [9,-3,-2,6,25],
-    [-6,10,18,1,52]
-]
 
-print(
-    obterVetorSolucao(
-        obterMatrizTriangular(matriz)
-    )
-)
+matriz = []
+for i in range(1, 4):
+    with open(f'./data/m{i}.txt', 'r') as f:
+        next(f)
+        matriz = [[float(num) for num in line.split(' ')] for line in f]
+
+    with open(f'./data/r{i}.txt', 'w') as f:
+        for linha in obterMatrizTriangular(matriz):
+            for elemento in linha:
+                f.write(f'{elemento} ')
+            f.write("\n")

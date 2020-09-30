@@ -42,13 +42,14 @@ def metodo(matriz):
     return matriz
 
 
-matriz = [
-    [2,1,1,0,1],
-    [4,3,3,1,2],
-    [8,7,9,5,4],
-    [6,7,9,8,5]
-]
+matriz = []
+for i in range(1, 4):
+    with open(f'./data/m{i}.txt', 'r') as f:
+        next(f)
+        matriz = [[float(num) for num in line.split(' ')] for line in f]
 
-print(
-    metodo(matriz)
-)
+    with open(f'./data/r{i}.txt', 'w') as f:
+        for linha in metodo(matriz):
+            for elemento in linha:
+                f.write(f'{elemento} ')
+            f.write("\n")
