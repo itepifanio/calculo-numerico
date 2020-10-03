@@ -1,3 +1,5 @@
+import copy
+
 # Eliminacao de Gauss sem pivoteamento
 
 def obterMatrizTriangular(matriz):
@@ -12,7 +14,7 @@ def obterMatrizTriangular(matriz):
                 matriz[j+1][i] = 0
     return matriz
 
-def vetorResidual(matrizTriangular):
+def obterResultado(matrizTriangular): # xBarra
     m = len(matrizTriangular)
     result = []
     for i in range(m - 1, -1, -1): # itera pelo fim 3, 2, 1, 0...
@@ -21,22 +23,42 @@ def vetorResidual(matrizTriangular):
             matrizTriangular[k][m] -= matrizTriangular[k][i] * result[0]
     return result
 
-def norma(vetorResidual):
+def obterVetorResidual(b, matriz, xBarra): # B - A*xBarra
+    # A*xBarra
+    result = []
+    for i in range(len(xBarra)):
+        value = 0
+        for j in range(len(xBarra)):
+            value += xBarra[j] * matriz[i][j]
+        result.append(value)
+    # B - A*xBarra
+
+    for i, value in enumerate(b):
+        result[i] = value - result[i]
+
+    return result
+
+def obterNorma(vetorResidual):
     value = 0
     for elem in vetorResidual:
         value += pow(abs(elem), 2)
     return pow(value, 0.5)
 
 matriz = []
-for i in range(1, 4):
+for i in range(1, 2):
     with open(f'./data/m{i}.txt', 'r') as f:
         next(f)
         matriz = [[float(num) for num in line.split(' ')] for line in f]
 
     with open(f'./data/r{i}.txt', 'w') as f:
-        matrizTriangular = obterMatrizTriangular(matriz)
-        normaVetor       = vetorResidual(matrizTriangular)
-        print(normaVetor)
+        matrizA = copy.deepcopy(matriz) # copia da matriz para ser usada no calculo do vetor residual
+        matrizTriangular = obterMatrizTriangular(matriz) # matrizTriangular
+        resultado        = obterResultado(matrizTriangular) # xBarra
+        
+        # vetorResidual  = B - A * xBarra onde xBarra é o primeiro valor aproximado da matriz.
+        vetorResidual    = obterVetorResidual([i[-1] for i in matrizA], [i[:-1] for i in matrizA], resultado)
+        norma            = obterNorma(vetorResidual)
+
         for linha in matrizTriangular:
             for elemento in linha:
                 f.write(f'{elemento} ')
