@@ -45,21 +45,36 @@ def obterNorma(vetorResidual):
     return pow(value, 0.5)
 
 matriz = []
-for i in range(1, 2):
+for i in range(1, 4):
+    # lê arquivo
     with open(f'./data/m{i}.txt', 'r') as f:
         next(f)
         matriz = [[float(num) for num in line.split(' ')] for line in f]
-
-    with open(f'./data/r{i}.txt', 'w') as f:
-        matrizA = copy.deepcopy(matriz) # copia da matriz para ser usada no calculo do vetor residual
-        matrizTriangular = obterMatrizTriangular(matriz) # matrizTriangular
-        resultado        = obterResultado(matrizTriangular) # xBarra
+    
+    matrizA = copy.deepcopy(matriz) # copia da matriz para ser usada no calculo do vetor residual
+    norma   = -1
+    cont    = 0
+    while norma != 0:
+        matrizTriangular = obterMatrizTriangular(matriz)
+        xBarra           = obterResultado(matrizTriangular)
         
         # vetorResidual  = B - A * xBarra onde xBarra é o primeiro valor aproximado da matriz.
-        vetorResidual    = obterVetorResidual([i[-1] for i in matrizA], [i[:-1] for i in matrizA], resultado)
+        vetorResidual    = obterVetorResidual([i[-1] for i in matrizA], [i[:-1] for i in matrizA], xBarra)
+        # print(vetorResidual)
         norma            = obterNorma(vetorResidual)
+        if norma != 0:
+            # transforma a proxima matriz para calcular Ay = r, onde r é o vetor residual (B - AxBarra)
+            ayr = list(matrizA)
+            for i in range(len(vetorResidual)):
+                ayr[i][-1] = vetorResidual[i]
+            y = obterResultado(obterMatrizTriangular(ayr)) # encontra y
+            x = [xBarra[i] + y[i] for i in range(len(y))] # x = xBarra + y
+            
+            # coloca a matriz para receber o valor Ax = b que será calculado até a norma ser zero
+            ayr = list(matrizA)
+            for i in range(len(x)):
+                ayr[i][-1] = x[i]
 
-        for linha in matrizTriangular:
-            for elemento in linha:
-                f.write(f'{elemento} ')
-            f.write("\n")
+            matriz = ayr
+        cont += 1
+    print(cont)

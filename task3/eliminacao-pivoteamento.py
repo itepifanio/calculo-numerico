@@ -1,4 +1,7 @@
+import copy
+
 # Eliminacao de Gauss com pivoteamento
+
 def escolhePivo(matriz, i, j):
     maior = 0
     maiorIndice = i
@@ -26,7 +29,7 @@ def obterMatrizTriangular(matriz):
                 matriz[j+1][i] = 0
     return matriz
 
-def vetorResidual(matrizTriangular):
+def obterResultado(matrizTriangular): # xBarra
     m = len(matrizTriangular)
     result = []
     for i in range(m - 1, -1, -1): # itera pelo fim 3, 2, 1, 0...
@@ -35,7 +38,22 @@ def vetorResidual(matrizTriangular):
             matrizTriangular[k][m] -= matrizTriangular[k][i] * result[0]
     return result
 
-def norma(vetorResidual):
+def obterVetorResidual(b, matriz, xBarra): # B - A*xBarra
+    # A*xBarra
+    result = []
+    for i in range(len(xBarra)):
+        value = 0
+        for j in range(len(xBarra)):
+            value += xBarra[j] * matriz[i][j]
+        result.append(value)
+    # B - A*xBarra
+
+    for i, value in enumerate(b):
+        result[i] = value - result[i]
+
+    return result
+
+def obterNorma(vetorResidual):
     value = 0
     for elem in vetorResidual:
         value += pow(abs(elem), 2)
@@ -43,15 +61,36 @@ def norma(vetorResidual):
 
 matriz = []
 for i in range(1, 4):
+    # lê arquivo
     with open(f'./data/m{i}.txt', 'r') as f:
         next(f)
         matriz = [[float(num) for num in line.split(' ')] for line in f]
-
-    with open(f'./data/r{i}.txt', 'w') as f:
+    
+    matrizA = copy.deepcopy(matriz) # copia da matriz para ser usada no calculo do vetor residual
+    norma   = -1
+    cont    = 0
+    while norma != 0:
         matrizTriangular = obterMatrizTriangular(matriz)
-        normaVetor       = vetorResidual(matrizTriangular)
-        print(normaVetor)
-        for linha in matrizTriangular:
-            for elemento in linha:
-                f.write(f'{elemento} ')
-            f.write("\n")
+        xBarra           = obterResultado(matrizTriangular)
+        
+        # vetorResidual  = B - A * xBarra onde xBarra é o primeiro valor aproximado da matriz.
+        vetorResidual    = obterVetorResidual([i[-1] for i in matrizA], [i[:-1] for i in matrizA], xBarra)
+        # print(vetorResidual)
+        norma            = obterNorma(vetorResidual)
+        if norma != 0:
+            # transforma a proxima matriz para calcular Ay = r, onde r é o vetor residual (B - AxBarra)
+            ayr = list(matrizA)
+            for i in range(len(vetorResidual)):
+                ayr[i][-1] = vetorResidual[i]
+            y = obterResultado(obterMatrizTriangular(ayr)) # encontra y
+            x = [xBarra[i] + y[i] for i in range(len(y))] # x = xBarra + y
+            
+            # coloca a matriz para receber o valor Ax = b que será calculado até a norma ser zero
+            ayr = list(matrizA)
+            for i in range(len(x)):
+                ayr[i][-1] = x[i]
+
+            matriz = ayr
+        cont += 1 # conta refinamentos
+    print(cont)
+
