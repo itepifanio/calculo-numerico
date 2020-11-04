@@ -11,4 +11,4 @@ def trapezioComposto(f, a, b, n):
     r += f(b)
     return r*(h/2.0)
 
-print( trapezioComposto(f, -5, 5, 10))
+print(trapezioComposto(f, -5, 5, 10))
