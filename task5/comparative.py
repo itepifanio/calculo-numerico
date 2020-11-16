@@ -44,13 +44,20 @@ def trapezioComposto(f, a, b, n):
     return r*(h/2.0)
 
 if __name__ == "__main__":
-    f = lambda x: math.sin(2*x)*x
+    f = lambda x: math.sin(x)*x
 
-    x0 = 0; xn = 9; n = 6
-
-    print('Trapezio composto:')
-    print(trapezioComposto(f, x0, xn, n))
-    print('Simpson 1/3:')
-    print(simpson13(f, x0, xn, n))
-    print('Simpson 3/8:')
-    print(simpson38(f, x0, xn, n))
+    x0 = -5; xn = 5
+    for k in range(1, 7):
+        print('k: ' + str(k))
+        m = 6*k
+        print('m: ' + str(m))
+        print('Trapezio composto:')
+        print(trapezioComposto(f, x0, xn, m))
+        m = 3*k
+        print('m: ' + str(m))
+        print('Simpson 1/3:')
+        print(simpson13(f, x0, xn, m))
+        m = 2*k
+        print('m: ' + str(m))
+        print('Simpson 3/8:')
+        print(simpson38(f, x0, xn, m))
